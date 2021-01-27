@@ -23,7 +23,7 @@ class ADFS
         try {
             parse_str($_SERVER['QUERY_STRING'], $query);
 
-            $requestid = $query['wctx'];
+            $requestid = $query['wctx'] ?? null;
             $issuer = $query['wtrealm'];
 
             $metadata = \SimpleSAML\Metadata\MetaDataStorageHandler::getMetadataHandler();
