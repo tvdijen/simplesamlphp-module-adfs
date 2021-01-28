@@ -17,7 +17,7 @@
  * "For an HTTP request that may be a multiple-session client request, issue a client-side redirect response instead of a server-side redirect response. For example, send an HTTP script or a META REFRESH tag instead of an HTTP 302 response. This change forces the client back into the default Web browser of the user. Therefore, the default browser session can handle the call and can keep the call in a single, read-only session."
  */
 
-if ((strpos($_SERVER['HTTP_USER_AGENT'] ?? "", 'Trident') > 0) && (strpos($_SERVER['HTTP_HOST'], 'duke-dcri-uat') !== false))
+if ((strpos($_SERVER['HTTP_USER_AGENT'] ?? "", 'Trident') > 0))
 {
     // ie11 browser needs refresh to force use of default browser
     if (array_key_exists('refreshed', $_GET)) {
