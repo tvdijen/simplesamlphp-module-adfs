@@ -6,6 +6,7 @@ use RobRichards\XMLSecLibs\XMLSecurityDSig;
 use RobRichards\XMLSecLibs\XMLSecurityKey;
 use SAML2\Constants;
 
+use SimpleSAML\Auth\State;
 use SimpleSAML\Utils\Config\Metadata;
 use SimpleSAML\Utils\Crypto;
 use SimpleSAML\Utils\HTTP;
@@ -29,6 +30,7 @@ class ADFS
             $metadata = \SimpleSAML\Metadata\MetaDataStorageHandler::getMetadataHandler();
             $spMetadata = $metadata->getMetaDataConfig($issuer, 'adfs-sp-remote');
 
+            $sessionLostURL = HTTP::getSelfURL();
             \SimpleSAML\Logger::info('ADFS - IdP.prp: Incoming Authentication request: '.$issuer.' id '.$requestid);
         } catch (\Exception $exception) {
             throw new \SimpleSAML\Error\Error('PROCESSAUTHNREQUEST', $exception);
@@ -38,6 +40,7 @@ class ADFS
             'Responder' => ['\SimpleSAML\Module\adfs\IdP\ADFS', 'sendResponse'],
             'SPMetadata' => $spMetadata->toArray(),
             'ForceAuthn' => false,
+            State::RESTART => $sessionLostURL,
             'isPassive' => false,
             'adfs:wctx' => $requestid,
             'adfs:wreply' => false
